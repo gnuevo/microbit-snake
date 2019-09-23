@@ -1,13 +1,17 @@
-# Add your Python code here. E.g.
 from microbit import *
 import random
 
+# Define constants
+# they modify the way the game behaves
 directions = [(1,0), (0,1), (-1,0), (0,-1)]
 FOOD_BRIGHT = 9
 SNAKE_BRIGHT = 5
 MAX_X = 4
 MAX_Y = 4
-DIFFICULTY = 0.3
+# modify DIFFICULTY and START_SLEEP_TIME 
+# to set your challenge
+DIFFICULTY = 0.1
+START_SLEEP_TIME = 1000
 SKULL = Image("55555:"
               "59595:"
               "05550:"
@@ -15,7 +19,7 @@ SKULL = Image("55555:"
               "05550")
 
 
-
+# define functions
 def draw():
     display.clear()
     for pos in snake:
@@ -56,13 +60,14 @@ def compute_next_food():
         food = (random.randint(0, MAX_X), random.randint(0, MAX_Y))
     return food
 
+# define variables
 snake = [(2,3),(2,4)]
 others = []
 food = compute_next_food()
-sleep_time = 2000
-#others = [(0,0), (0,4)]
+sleep_time = START_SLEEP_TIME
 current_direction = 3
 speed_up = (1.0 - DIFFICULTY)
+points = 0
 
 gameOn = True
 while gameOn:
@@ -89,6 +94,7 @@ while gameOn:
         new_snake.append(snake[-1])
         food = compute_next_food()
         sleep_time *= speed_up
+        points += 1
     
     # draw new frame    
     snake = new_snake
@@ -96,4 +102,5 @@ while gameOn:
 
 while True:
     display.show(SKULL)
-    
+    sleep(2000)
+    display.scroll(points)
